@@ -22,23 +22,14 @@ class HelloWorld(APIView):
         content = {'message' : 'HEllo , World! so i want to say this is message from jwt.!'}
         return Response(content)
 
-@api_view(['GET'])
+#first way to post in the ORM(database)
+@api_view(['GET', 'POST'])
 def index(r):
     p = User.objects.get(id=2)
     se = UserSerializers(p)
 
     print('////////////////////// : ', se.data)
     return Response({"Hello workd"})
-
-@api_view(['GET', 'POST'])
-def index2(r):
-
-    print("OUT /////////////////////// : ", r.data)
-    print("OUT /////////////////////// : ", type(r.data))
-    print(r.data[0])
-
-    return Response(r.data)
-
 
 class PersonList(APIView):
 
