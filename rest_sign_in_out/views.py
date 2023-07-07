@@ -22,14 +22,16 @@ class HelloWorld(APIView):
         content = {'message' : 'HEllo , World! so i want to say this is message from jwt.!'}
         return Response(content)
 
-#first way to post in the ORM(database)
-@api_view(['GET', 'POST'])
+@api_view(['GET','POST']) # this is first way to post info to databases.
 def index(r):
-    p = User.objects.get(id=2)
-    se = UserSerializers(p)
 
-    print('////////////////////// : ', se.data)
-    return Response({"Hello workd"})
+    if r.method == 'POST':
+        myusers = User(username = r.data['username'] , email = r.data['email'], password = r.data['password'])
+        myusers.save()
+        return Response("saved!")
+    else:
+        return Response('please try with post.')
+
 
 class PersonList(APIView):
 
