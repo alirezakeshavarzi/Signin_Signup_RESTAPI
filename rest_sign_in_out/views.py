@@ -46,12 +46,6 @@ def index(r):
 
 
 
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .models import User
-from .serializers import UserSerializers
-
 class PersonList(APIView):
     permission_classes = [IsAuthenticated]  # Require authentication
 
@@ -69,6 +63,7 @@ class PersonList(APIView):
             return Response(my2.data)
         else:
             return Response({"error": "User not found"}, status=404)
+
 class ChangePass(APIView):
 
     def post(self,request):
