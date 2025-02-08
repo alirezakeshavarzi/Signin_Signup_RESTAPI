@@ -46,10 +46,16 @@ def index(r):
 
 
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import User
+from .serializers import UserSerializers
+
 class PersonList(APIView):
+    permission_classes = [IsAuthenticated]  # Require authentication
 
     def get(self, r):
-        # Use query_params to access query parameters
         username = r.query_params.get('username')
         password = r.query_params.get('password')
 
@@ -63,20 +69,6 @@ class PersonList(APIView):
             return Response(my2.data)
         else:
             return Response({"error": "User not found"}, status=404)
-
-    def post(self, r):
-        # For POST requests, r.data is correct
-        username = r.data.get('username')
-        email = r.data.get('email')
-        password = r.data.get('password')
-
-        if not username or not email or not password:
-            return Response({"error": "Username, email, and password are required"}, status=400)
-
-        myusers = User(username=username, email=email, password=password)
-        myusers.save()
-        return Response("Saved!")
-
 class ChangePass(APIView):
 
     def post(self,request):
