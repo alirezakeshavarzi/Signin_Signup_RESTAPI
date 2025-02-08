@@ -13,14 +13,10 @@ from localStoragePy import localStoragePy
 
 from .models import User
 
-
-
-
-
 from .seri import UserSerializers
 
 
-
+# This class (Hello) is only for testing the IsAuthenticated system and has no other purpose, i.e. if it IsAuthenticated, it prints the desired message.
 class Hello(APIView):
     permission_classes = (IsAuthenticated,)
     print('pemission : ////////////////////  ', permission_classes)
@@ -64,10 +60,10 @@ class PersonList(APIView):
         else:
             return Response({"error": "User not found"}, status=404)
 
-class ChangePass(APIView):
-
-    def post(self,request):
-        request.data['lastpass']
+# class ChangePass(APIView):
+#
+#     def post(self,request):
+#         request.data['lastpass']
 
 
 # Create your views here.
