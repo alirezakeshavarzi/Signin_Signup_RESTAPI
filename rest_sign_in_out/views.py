@@ -21,10 +21,6 @@ from .seri import UserSerializers
 
 
 
-
-
-
-
 class Hello(APIView):
     permission_classes = (IsAuthenticated,)
     print('pemission : ////////////////////  ', permission_classes)
@@ -53,25 +49,33 @@ def index(r):
 class PersonList(APIView):
 
     def get(self, r):
+        # Use query_params to access query parameters
+        username = r.query_params.get('username')
+        password = r.query_params.get('password')
 
-        my = User.objects.filter(username = r.data['username'] , password = r.data['password']).values()
+        if not username or not password:
+            return Response({"error": "Username and password are required"}, status=400)
 
-
-
-
+        my = User.objects.filter(username=username, password=password).values()
         my2 = UserSerializers(my, many=True)
 
         if my:
             return Response(my2.data)
         else:
-            return Response(404)
+            return Response({"error": "User not found"}, status=404)
 
     def post(self, r):
+        # For POST requests, r.data is correct
+        username = r.data.get('username')
+        email = r.data.get('email')
+        password = r.data.get('password')
 
-        myusers = User(username = r.data['username'] , email = r.data['email'], password = r.data['password'])
+        if not username or not email or not password:
+            return Response({"error": "Username, email, and password are required"}, status=400)
+
+        myusers = User(username=username, email=email, password=password)
         myusers.save()
         return Response("Saved!")
-
 
 class ChangePass(APIView):
 
