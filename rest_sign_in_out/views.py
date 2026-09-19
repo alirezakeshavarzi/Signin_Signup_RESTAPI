@@ -16,29 +16,35 @@ from .models import User
 from .seri import UserSerializers
 
 
-# This class (Hello) is only for testing the IsAuthenticated system and has no other purpose, i.e. if it IsAuthenticated, it prints the desired message.
+# this class (Hello) is only for testing the IsAuthenticated system and has no other purpose, i.e. if it IsAuthenticated, it prints the desired message.
 class Hello(APIView):
     permission_classes = (IsAuthenticated,)
-    print('pemission : ////////////////////  ', permission_classes)
 
     def get(self, request):
         print('request : ///////////////////////////// : ', request)
 
-        content = {'message' : 'HEllo , World! so i want to say this is message from jwt.!'}
+        content = {'message' : 'Hello , World! so i want to say this is message from jwt.!'}
         return Response(content)
 
 
 
 @api_view(['GET','POST']) # this is first way to post info to databases.
-def index(r):
+def index(req):
 
-    if r.method == 'POST':
-        myusers = User(username = r.data['username'] , email = r.data['email'], password = r.data['password'])
+    # save info from user(that give it) to save in db.
+    if req.method == 'POST':
+        myusers = User(username = req.data['username'],
+                       email = req.data['email'],
+                       )
+
+        myusers.set_password(req.data['password'])
         myusers.save()
         return Response("saved!")
-    elif r.method == 'GET':
+
+    # get user info to show.
+    elif req.method == 'GET':
         myuser = User.objects.all()
-        return Response(UserSerializers(myuser).data)
+        return Response(UserSerializers(myuser, many=True).data)
 
 
 
@@ -59,11 +65,6 @@ class PersonList(APIView):
             return Response(my2.data)
         else:
             return Response({"error": "User not found"}, status=404)
-
-# class ChangePass(APIView):
-#
-#     def post(self,request):
-#         request.data['lastpass']
 
 
 # Create your views here.
