@@ -22,11 +22,11 @@ from rest_framework_simplejwt import views as jwt_views
 
 
 
-from rest_sign_in_out.views import index, PersonList, Hello
+from rest_sign_in_out.views import sign_in, PersonList, Hello
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', index),
+    path('sign_in/', sign_in),
     path('home/', PersonList.as_view()),
 
     path('hello/', Hello.as_view(), name='hello'),

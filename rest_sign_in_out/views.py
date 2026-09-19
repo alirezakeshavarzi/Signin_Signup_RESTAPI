@@ -1,8 +1,5 @@
-from tkinter import StringVar, Tk
 
-from django.db.models.functions import window
-from django.shortcuts import render
-
+from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -21,7 +18,6 @@ class Hello(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        print('request : ///////////////////////////// : ', request)
 
         content = {'message' : 'Hello , World! so i want to say this is message from jwt.!'}
         return Response(content)
@@ -29,7 +25,7 @@ class Hello(APIView):
 
 
 @api_view(['GET','POST']) # this is first way to post info to databases.
-def index(req):
+def sign_in(req):
 
     # save info from user(that give it) to save in db.
     if req.method == 'POST':
@@ -58,7 +54,10 @@ class PersonList(APIView):
         if not username or not password:
             return Response({"error": "Username and password are required"}, status=400)
 
-        my = User.objects.filter(username=username, password=password).values()
+        my = authenticate(username=username,
+                         password=password
+                         )
+
         my2 = UserSerializers(my, many=True)
 
         if my:
