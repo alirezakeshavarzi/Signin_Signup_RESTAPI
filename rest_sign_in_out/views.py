@@ -6,7 +6,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 
-from localStoragePy import localStoragePy
 
 from .models import User
 
@@ -24,11 +23,11 @@ class Hello(APIView):
 
 
 
-@api_view(['GET','POST']) # this is first way to post info to databases.
-def sign_in(req):
 
-    # save info from user(that give it) to save in db.
-    if req.method == 'POST':
+class Rigister(APIView):
+
+    def post(self, req):
+        # save info from user(that give it) to save in db.
         myusers = User(username = req.data['username'],
                        email = req.data['email'],
                        )
@@ -37,33 +36,15 @@ def sign_in(req):
         myusers.save()
         return Response("saved!")
 
-    # get user info to show.
-    elif req.method == 'GET':
-        myuser = User.objects.all()
-        return Response(UserSerializers(myuser, many=True).data)
 
-
-
-class PersonList(APIView):
+# display information about the user logged into their account
+class UserInfo(APIView):
     permission_classes = [IsAuthenticated]  # Require authentication
 
-    def get(self, r):
-        username = r.query_params.get('username')
-        password = r.query_params.get('password')
+    def get(self, req):
 
-        if not username or not password:
-            return Response({"error": "Username and password are required"}, status=400)
-
-        my = authenticate(username=username,
-                         password=password
-                         )
-
-        my2 = UserSerializers(my, many=True)
-
-        if my:
-            return Response(my2.data)
-        else:
-            return Response({"error": "User not found"}, status=404)
+        my_serializer = UserSerializers(req.user)
+        return Response(my_serializer.data)
 
 
 # Create your views here.
