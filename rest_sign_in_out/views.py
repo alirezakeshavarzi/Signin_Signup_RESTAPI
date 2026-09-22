@@ -1,24 +1,19 @@
 
-from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import serializers
-from rest_framework.decorators import api_view
 
-
-from .models import User
 
 from .seri import UserRegisterSerializer, UserInfoSerializer
 
 
-# this class (Hello) is only for testing the IsAuthenticated system and has no other purpose, i.e. if it IsAuthenticated, it prints the desired message.
+# just for test
 class Hello(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
 
-        content = {'message' : 'Hello , World! so i want to say this is message from jwt.!'}
+        content = {'message': 'Hello , World!'}
         return Response(content)
 
 
