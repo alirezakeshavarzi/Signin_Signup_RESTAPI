@@ -7,17 +7,6 @@ from rest_framework.permissions import IsAuthenticated
 from .seri import UserRegisterSerializer, UserInfoSerializer
 
 
-# just for test
-class Hello(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def get(self, request):
-
-        content = {'message': 'Hello , World!'}
-        return Response(content)
-
-
-
 
 class Rigister(APIView):
 
