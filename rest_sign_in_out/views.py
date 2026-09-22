@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view
 
 from .models import User
 
-from .seri import UserSerializers
+from .seri import UserRegisterSerializer, UserInfoSerializer
 
 
 # this class (Hello) is only for testing the IsAuthenticated system and has no other purpose, i.e. if it IsAuthenticated, it prints the desired message.
@@ -28,7 +28,7 @@ class Rigister(APIView):
 
     def post(self, req):
 
-        ser = UserSerializers(date=req.data)
+        ser = UserRegisterSerializer(date=req.data)
 
         if ser.is_valid():
             ser.save()
@@ -43,7 +43,7 @@ class UserInfo(APIView):
 
     def get(self, req):
 
-        my_serializer = UserSerializers(req.user)
+        my_serializer = UserInfoSerializer(req.user)
         return Response(my_serializer.data)
 
 
