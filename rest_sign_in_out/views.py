@@ -27,14 +27,13 @@ class Hello(APIView):
 class Rigister(APIView):
 
     def post(self, req):
-        # save info from user(that give it) to save in db.
-        myusers = User(username = req.data['username'],
-                       email = req.data['email'],
-                       )
 
-        myusers.set_password(req.data['password'])
-        myusers.save()
-        return Response("saved!")
+        ser = UserSerializers(req.data)
+
+        if ser.is_valid():
+            ser.save()
+
+        return Response(ser.errors, status=400)
 
 
 # display information about the user logged into their account
