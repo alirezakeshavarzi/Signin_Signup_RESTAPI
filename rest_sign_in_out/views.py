@@ -32,6 +32,7 @@ class Rigister(APIView):
 
         if ser.is_valid():
             ser.save()
+            return Response("saved!")
 
         return Response(ser.errors, status=400)
 
