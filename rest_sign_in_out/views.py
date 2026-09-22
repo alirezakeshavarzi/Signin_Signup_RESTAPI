@@ -28,7 +28,7 @@ class Rigister(APIView):
 
     def post(self, req):
 
-        ser = UserRegisterSerializer(date=req.data)
+        ser = UserRegisterSerializer(data=req.data)
 
         if ser.is_valid():
             ser.save()
