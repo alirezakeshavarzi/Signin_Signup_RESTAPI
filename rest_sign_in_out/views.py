@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 
-from .seri import UserRegisterSerializer, UserInfoSerializer
+from .serializers import UserRegisterSerializer, UserInfoSerializer
 
 
 
